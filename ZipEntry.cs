@@ -27,12 +27,6 @@ namespace Llziplib
 		{
 			LocalFileHeader.Write(writer);
 
-			if (Data.Length != CentralDirectoryHeader.CompressedSize)
-				Debugger.Break();
-
-			if (Data.Length != LocalFileHeader.CompressedSize)
-				Debugger.Break();
-
 			if (Data != null)
 				writer.Write(Data, 0, Data.Length);
 			if (HasDataDescriptor)
