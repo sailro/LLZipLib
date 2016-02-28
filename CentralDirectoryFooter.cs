@@ -55,10 +55,12 @@ namespace Llziplib
 			writer.Write(Signature);
 			writer.Write(DiskNumber);
 			writer.Write(CentralDirectoryDiskNumber);
+
+			//At this time, everything is written
+			DiskEntries = TotalDiskEntries = (ushort) archive.Entries.Count;
 			writer.Write(DiskEntries);
 			writer.Write(TotalDiskEntries);
 
-			//At this time, everything is written
 			var firstEntry = archive.Entries.FirstOrDefault();
 			CentralDirectoryOffset = (uint) (firstEntry?.CentralDirectoryHeader.Offset ?? 0);
 			CentralDirectorySize = (uint) archive.Entries.Sum(entry => entry.CentralDirectoryHeader.GetSize());
