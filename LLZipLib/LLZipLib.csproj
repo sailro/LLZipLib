@@ -41,8 +41,10 @@
     <Compile Include="DataDescriptor.cs" />
     <Compile Include="Descriptor.cs" />
     <Compile Include="Header.cs" />
+    <Compile Include="IStringConverter.cs" />
     <Compile Include="LocalFileHeader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DefaultStringConverter.cs" />
     <Compile Include="ZipArchive.cs" />
     <Compile Include="ZipEntry.cs" />
   </ItemGroup>

@@ -5,12 +5,23 @@ namespace LLZipLib
 {
 	public class CentralDirectoryHeader : Header
 	{
+		public ZipEntry ZipEntry { get; set; }
+
 		public byte[] Comment { get; set; }
 		public uint LocalHeaderOffset { get; private set; }
 		public uint ExternalAttribute { get; set; }
 		public ushort InternalAttribute { get; set; }
 		public ushort DiskNumber { get; set; }
 		public ushort VersionNeeded { get; set; }
+
+		public CentralDirectoryHeader()
+		{
+		}
+
+		public CentralDirectoryHeader(ZipEntry zipEntry)
+		{
+			ZipEntry = zipEntry;
+		}
 
 		public CentralDirectoryHeader(BinaryReader reader)
 		{
@@ -46,7 +57,7 @@ namespace LLZipLib
 			return 6*sizeof (uint) + 11*sizeof (ushort) + (Filename?.Length ?? 0) + (Extra?.Length ?? 0) + (Comment?.Length ?? 0);
 		}
 
-		internal void Write(ZipEntry entry, BinaryWriter writer)
+		internal void Write(BinaryWriter writer)
 		{
 			Offset = writer.BaseStream.Position;
 
@@ -68,7 +79,7 @@ namespace LLZipLib
 			writer.Write(ExternalAttribute);
 
 			//At this time, all local headers are written
-			LocalHeaderOffset = (uint) entry.LocalFileHeader.Offset;
+			LocalHeaderOffset = (uint) ZipEntry.LocalFileHeader.Offset;
 			writer.Write(LocalHeaderOffset);
 
 			if (Filename != null)

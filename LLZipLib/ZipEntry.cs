@@ -5,6 +5,8 @@ namespace LLZipLib
 {
 	public class ZipEntry
 	{
+		public ZipArchive ZipArchive { get; set; }
+
 		public CentralDirectoryHeader CentralDirectoryHeader { get; }
 		public LocalFileHeader LocalFileHeader { get; }
 		public byte[] Data { get; set; }
@@ -12,8 +14,14 @@ namespace LLZipLib
 
 		public bool HasDataDescriptor => (LocalFileHeader.Flags & 4) != 0;
 
-		public ZipEntry(BinaryReader reader, CentralDirectoryHeader header)
+		public ZipEntry(ZipArchive archive)
 		{
+			ZipArchive = archive;
+		}
+
+		public ZipEntry(ZipArchive archive, BinaryReader reader, CentralDirectoryHeader header) : this(archive)
+		{
+			header.ZipEntry = this;
 			CentralDirectoryHeader = header;
 			reader.BaseStream.Seek(header.LocalHeaderOffset, SeekOrigin.Begin);
 			LocalFileHeader = new LocalFileHeader(reader);

@@ -6,6 +6,8 @@ namespace LLZipLib
 	{
 		public DataDescriptor(BinaryReader reader)
 		{
+			Offset = reader.BaseStream.Position;
+
 			Crc = reader.ReadUInt32();
 			CompressedSize = reader.ReadInt32();
 			UncompressedSize = reader.ReadInt32();
@@ -13,6 +15,8 @@ namespace LLZipLib
 
 		internal void Write(BinaryWriter writer)
 		{
+			Offset = writer.BaseStream.Position;
+
 			writer.Write(Crc);
 			writer.Write(CompressedSize);
 			writer.Write(UncompressedSize);

@@ -13,7 +13,7 @@ namespace LLZipLib
 
 		public ZipArchive()
 		{
-			CentralDirectoryFooter = new CentralDirectoryFooter();
+			CentralDirectoryFooter = new CentralDirectoryFooter(this);
 			Entries = new List<ZipEntry>();
 		}
 
@@ -32,7 +32,7 @@ namespace LLZipLib
 		public void Read(BinaryReader reader)
 		{
 			Offset = reader.BaseStream.Position;
-			CentralDirectoryFooter = new CentralDirectoryFooter(reader);
+			CentralDirectoryFooter = new CentralDirectoryFooter(this, reader);
 
 			Entries.Clear();
 			var headers = new List<CentralDirectoryHeader>();
@@ -42,7 +42,7 @@ namespace LLZipLib
 				headers.Add(new CentralDirectoryHeader(reader));
 
 			foreach (var header in headers)
-				Entries.Add(new ZipEntry(reader, header));
+				Entries.Add(new ZipEntry(this, reader, header));
 		}
 
 		public void Write(string filename)
@@ -65,9 +65,9 @@ namespace LLZipLib
 				entry.Write(writer);
 
 			foreach (var entry in Entries)
-				entry.CentralDirectoryHeader.Write(entry, writer);
+				entry.CentralDirectoryHeader.Write(writer);
 
-			CentralDirectoryFooter.Write(this, writer);
+			CentralDirectoryFooter.Write(writer);
 
 			if (writer.BaseStream.Position - Offset != GetSize())
 				throw new NotSupportedException("size mismatch");

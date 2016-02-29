@@ -6,6 +6,8 @@ namespace LLZipLib
 {
 	public class CentralDirectoryFooter : Block
 	{
+		public ZipArchive ZipArchive { get; set; }
+
 		public uint Signature { get; private set; }
 		public byte[] Comment { get; set; }
 		public uint CentralDirectoryOffset { get; private set; }
@@ -15,29 +17,12 @@ namespace LLZipLib
 		public ushort CentralDirectoryDiskNumber { get; set; }
 		public ushort DiskNumber { get; set; }
 
-		public CentralDirectoryFooter()
+		public CentralDirectoryFooter(ZipArchive archive)
 		{
+			ZipArchive = archive;
 		}
 
-		private bool TrySeekToSignature(BinaryReader reader)
-		{
-			var currentPosition = reader.BaseStream.Seek(-GetSize(), SeekOrigin.End);
-			const int signatureLength = sizeof (uint);
-
-			while (currentPosition >= 0)
-			{
-				Signature = reader.ReadUInt32();
-				if (Signature == 0x06054B50)
-				{
-					Offset = currentPosition;
-					return true;
-				}
-				currentPosition = reader.BaseStream.Seek(-signatureLength - 1, SeekOrigin.Current);
-			}
-			return false;
-		}
-
-		public CentralDirectoryFooter(BinaryReader reader)
+		public CentralDirectoryFooter(ZipArchive archive, BinaryReader reader) : this(archive)
 		{
 			if (!TrySeekToSignature(reader))
 				throw new NotSupportedException("bad signature");
@@ -58,12 +43,30 @@ namespace LLZipLib
 			Comment = reader.ReadBytes(commentLength);
 		}
 
+		private bool TrySeekToSignature(BinaryReader reader)
+		{
+			var currentPosition = reader.BaseStream.Seek(-GetSize(), SeekOrigin.End);
+			const int signatureLength = sizeof(uint);
+
+			while (currentPosition >= 0)
+			{
+				Signature = reader.ReadUInt32();
+				if (Signature == 0x06054B50)
+				{
+					Offset = currentPosition;
+					return true;
+				}
+				currentPosition = reader.BaseStream.Seek(-signatureLength - 1, SeekOrigin.Current);
+			}
+			return false;
+		}
+
 		internal override int GetSize()
 		{
 			return 3*sizeof (uint) + 5*sizeof (ushort) + (Comment?.Length ?? 0);
 		}
 
-		internal void Write(ZipArchive archive, BinaryWriter writer)
+		internal void Write(BinaryWriter writer)
 		{
 			Offset = writer.BaseStream.Position;
 
@@ -72,6 +75,8 @@ namespace LLZipLib
 			writer.Write(CentralDirectoryDiskNumber);
 
 			//At this time, everything is written
+			var archive = ZipArchive;
+
 			DiskEntries = TotalDiskEntries = (ushort) archive.Entries.Count;
 			writer.Write(DiskEntries);
 			writer.Write(TotalDiskEntries);
