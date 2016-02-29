@@ -2,16 +2,16 @@
 
 namespace LLZipLib
 {
-	internal class DefaultStringConverter : IStringConverter
+	public class DefaultStringConverter : IStringConverter
 	{
 		private static readonly Encoding Encoding = Encoding.UTF8;
 
-		public string GetString(byte[] buffer, StringConverterContext context)
+		public virtual string GetString(byte[] buffer, StringConverterContext context)
 		{
 			return Encoding.GetString(buffer);
 		}
 
-		public byte[] GetBytes(string str, StringConverterContext context)
+		public virtual byte[] GetBytes(string str, StringConverterContext context)
 		{
 			return Encoding.GetBytes(str);
 		}

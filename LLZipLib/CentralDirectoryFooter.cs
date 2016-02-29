@@ -16,7 +16,7 @@ namespace LLZipLib
 		public ushort CentralDirectoryDiskNumber { get; set; }
 		public ushort DiskNumber { get; set; }
 
-		private byte[] CommentBuffer { get; set; }
+		public byte[] CommentBuffer { get; set; }
 		public string Comment
 		{
 			get { return ZipArchive.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment); }
@@ -41,7 +41,7 @@ namespace LLZipLib
 			DiskEntries = reader.ReadUInt16();
 			TotalDiskEntries = reader.ReadUInt16();
 			if (DiskEntries != TotalDiskEntries)
-				throw new NotSupportedException("multiple volume not supported");
+				throw new NotSupportedException("multiple volumes are not supported");
 
 			CentralDirectorySize = reader.ReadUInt32();
 			CentralDirectoryOffset = reader.ReadUInt32();

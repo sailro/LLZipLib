@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLZipLib", "LLZipLib\LLZipL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLZipLib.Test", "LLZipLib.Test\LLZipLib.Test.csproj", "{BE41EDF6-BDC4-4846-9149-32C99A7FCB9F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLZipLib.Samples", "LLZipLib.Samples\LLZipLib.Samples.csproj", "{38D0EC90-5671-4775-B988-7F4E86F0B541}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BE41EDF6-BDC4-4846-9149-32C99A7FCB9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE41EDF6-BDC4-4846-9149-32C99A7FCB9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE41EDF6-BDC4-4846-9149-32C99A7FCB9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38D0EC90-5671-4775-B988-7F4E86F0B541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38D0EC90-5671-4775-B988-7F4E86F0B541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38D0EC90-5671-4775-B988-7F4E86F0B541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38D0EC90-5671-4775-B988-7F4E86F0B541}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

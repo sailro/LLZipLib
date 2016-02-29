@@ -3,7 +3,8 @@
 	public enum StringConverterContext
 	{
 		Comment,
-		Filename
+		Filename,
+		Content
 	}
 
 	public interface IStringConverter

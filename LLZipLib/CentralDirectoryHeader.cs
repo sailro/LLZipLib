@@ -13,7 +13,7 @@ namespace LLZipLib
 		public ushort DiskNumber { get; set; }
 		public ushort VersionNeeded { get; set; }
 
-		private byte[] CommentBuffer { get; set; }
+		public byte[] CommentBuffer { get; set; }
 		public string Comment
 		{
 			get { return ZipEntry.ZipArchive.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment); }

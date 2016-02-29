@@ -9,6 +9,6 @@
 		public ushort Date { get; set; }
 		public ushort Time { get; set; }
 		public byte[] Extra { get; set; }
-		protected byte[] FilenameBuffer { get; set; }
+		public byte[] FilenameBuffer { get; set; }
 	}
 }
