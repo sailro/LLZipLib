@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LLZipLib.Test
+namespace LLZipLib.Tests
 {
 	[TestClass]
 	public class RoundTripTest
@@ -19,7 +19,7 @@ namespace LLZipLib.Test
 			{
 				_testContextInstance = value;
 				_filesDirectory = Path.Combine(_testContextInstance.TestDir, @"..\..");
-				_filesDirectory = Path.Combine(_filesDirectory, @"LLZipLib.Test\Files");
+				_filesDirectory = Path.Combine(_filesDirectory, @"LLZipLib.Tests\Files");
 				_filesDirectory = Path.GetFullPath(_filesDirectory);
 			}
 		}

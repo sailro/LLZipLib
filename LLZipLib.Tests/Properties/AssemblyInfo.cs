@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("LLZipLib.Test")]
+[assembly: AssemblyTitle("LLZipLib.Tests")]
 [assembly: AssemblyProduct("LLZipLib")]
 [assembly: AssemblyCopyright("Copyright © Sebastien Lbreton 2016")]
 

@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLZipLib", "LLZipLib\LLZipLib.csproj", "{0449987E-4F5D-4781-B8BB-6866E200F9FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLZipLib.Test", "LLZipLib.Test\LLZipLib.Test.csproj", "{BE41EDF6-BDC4-4846-9149-32C99A7FCB9F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLZipLib.Tests", "LLZipLib.Tests\LLZipLib.Tests.csproj", "{BE41EDF6-BDC4-4846-9149-32C99A7FCB9F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLZipLib.Samples", "LLZipLib.Samples\LLZipLib.Samples.csproj", "{38D0EC90-5671-4775-B988-7F4E86F0B541}"
 EndProject

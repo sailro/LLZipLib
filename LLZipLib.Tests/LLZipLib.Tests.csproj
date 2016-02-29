@@ -6,8 +6,8 @@
     <ProjectGuid>{BE41EDF6-BDC4-4846-9149-32C99A7FCB9F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LLZipLib.Test</RootNamespace>
-    <AssemblyName>LLZipLib.Test</AssemblyName>
+    <RootNamespace>LLZipLib.Tests</RootNamespace>
+    <AssemblyName>LLZipLib.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
