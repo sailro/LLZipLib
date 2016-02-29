@@ -32,9 +32,6 @@ namespace LLZipLib
 		public void Read(BinaryReader reader)
 		{
 			Offset = reader.BaseStream.Position;
-
-			// TODO, this will not work with archive comments
-			reader.BaseStream.Seek(-0x16, SeekOrigin.End);
 			CentralDirectoryFooter = new CentralDirectoryFooter(reader);
 
 			Entries.Clear();

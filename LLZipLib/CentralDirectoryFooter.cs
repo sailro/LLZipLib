@@ -6,9 +6,9 @@ namespace LLZipLib
 {
 	public class CentralDirectoryFooter : Block
 	{
-		public uint Signature { get; }
+		public uint Signature { get; private set; }
 		public byte[] Comment { get; set; }
-		public uint CentralDirectoryOffset { get; internal set; }
+		public uint CentralDirectoryOffset { get; private set; }
 		public uint CentralDirectorySize { get; set; }
 		public ushort TotalDiskEntries { get; set; }
 		public ushort DiskEntries { get; set; }
@@ -19,12 +19,27 @@ namespace LLZipLib
 		{
 		}
 
+		private bool TrySeekToSignature(BinaryReader reader)
+		{
+			var currentPosition = reader.BaseStream.Seek(-GetSize(), SeekOrigin.End);
+			const int signatureLength = sizeof (uint);
+
+			while (currentPosition >= 0)
+			{
+				Signature = reader.ReadUInt32();
+				if (Signature == 0x06054B50)
+				{
+					Offset = currentPosition;
+					return true;
+				}
+				currentPosition = reader.BaseStream.Seek(-signatureLength - 1, SeekOrigin.Current);
+			}
+			return false;
+		}
+
 		public CentralDirectoryFooter(BinaryReader reader)
 		{
-			Offset = reader.BaseStream.Position;
-
-			Signature = reader.ReadUInt32();
-			if (Signature != 0x06054B50)
+			if (!TrySeekToSignature(reader))
 				throw new NotSupportedException("bad signature");
 
 			DiskNumber = reader.ReadUInt16();
