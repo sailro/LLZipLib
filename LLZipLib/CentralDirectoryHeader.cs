@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Llziplib
+namespace LLZipLib
 {
 	public class CentralDirectoryHeader : Header
 	{

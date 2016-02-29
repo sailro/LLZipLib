@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace Llziplib
+namespace LLZipLib
 {
 	public class CentralDirectoryFooter : Block
 	{

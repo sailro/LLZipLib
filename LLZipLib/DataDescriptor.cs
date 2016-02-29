@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Llziplib
+namespace LLZipLib
 {
 	public class DataDescriptor : Descriptor
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 
-namespace Llziplib
+namespace LLZipLib
 {
 	public class ZipEntry
 	{

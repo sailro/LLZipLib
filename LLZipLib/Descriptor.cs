@@ -1,4 +1,4 @@
-﻿namespace Llziplib
+﻿namespace LLZipLib
 {
 	public abstract class Descriptor : Block
 	{

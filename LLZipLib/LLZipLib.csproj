@@ -7,8 +7,8 @@
     <ProjectGuid>{0449987E-4F5D-4781-B8BB-6866E200F9FE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Llziplib</RootNamespace>
-    <AssemblyName>Llziplib</AssemblyName>
+    <RootNamespace>LLZipLib</RootNamespace>
+    <AssemblyName>LLZipLib</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
