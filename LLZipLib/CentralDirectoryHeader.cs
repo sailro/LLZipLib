@@ -7,12 +7,24 @@ namespace LLZipLib
 	{
 		public ZipEntry ZipEntry { get; set; }
 
-		public byte[] Comment { get; set; }
 		public uint LocalHeaderOffset { get; private set; }
 		public uint ExternalAttribute { get; set; }
 		public ushort InternalAttribute { get; set; }
 		public ushort DiskNumber { get; set; }
 		public ushort VersionNeeded { get; set; }
+
+		private byte[] CommentBuffer { get; set; }
+		public string Comment
+		{
+			get { return ZipEntry.ZipArchive.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment); }
+			set { CommentBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Comment); }
+		}
+
+		public string Filename
+		{
+			get { return ZipEntry.ZipArchive.StringConverter.GetString(FilenameBuffer, StringConverterContext.Filename); }
+			set { FilenameBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Filename); }
+		}
 
 		public CentralDirectoryHeader()
 		{
@@ -47,14 +59,14 @@ namespace LLZipLib
 			InternalAttribute = reader.ReadUInt16();
 			ExternalAttribute = reader.ReadUInt32();
 			LocalHeaderOffset = reader.ReadUInt32();
-			Filename = reader.ReadBytes(filenameLength);
+			FilenameBuffer = reader.ReadBytes(filenameLength);
 			Extra = reader.ReadBytes(extraLength);
-			Comment = reader.ReadBytes(commentLength);
+			CommentBuffer = reader.ReadBytes(commentLength);
 		}
 
 		internal override int GetSize()
 		{
-			return 6*sizeof (uint) + 11*sizeof (ushort) + (Filename?.Length ?? 0) + (Extra?.Length ?? 0) + (Comment?.Length ?? 0);
+			return 6*sizeof (uint) + 11*sizeof (ushort) + (FilenameBuffer?.Length ?? 0) + (Extra?.Length ?? 0) + (Comment?.Length ?? 0);
 		}
 
 		internal void Write(BinaryWriter writer)
@@ -71,7 +83,7 @@ namespace LLZipLib
 			writer.Write(Crc);
 			writer.Write(CompressedSize);
 			writer.Write(UncompressedSize);
-			writer.Write((ushort) (Filename?.Length ?? 0));
+			writer.Write((ushort) (FilenameBuffer?.Length ?? 0));
 			writer.Write((ushort) (Extra?.Length ?? 0));
 			writer.Write((ushort) (Comment?.Length ?? 0));
 			writer.Write(DiskNumber);
@@ -82,12 +94,12 @@ namespace LLZipLib
 			LocalHeaderOffset = (uint) ZipEntry.LocalFileHeader.Offset;
 			writer.Write(LocalHeaderOffset);
 
-			if (Filename != null)
-				writer.Write(Filename, 0, Filename.Length);
+			if (FilenameBuffer != null)
+				writer.Write(FilenameBuffer, 0, FilenameBuffer.Length);
 			if (Extra != null)
 				writer.Write(Extra, 0, Extra.Length);
 			if (Comment != null)
-				writer.Write(Comment, 0, Comment.Length);
+				writer.Write(CommentBuffer, 0, Comment.Length);
 		}
 	}
 }

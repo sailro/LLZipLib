@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 
 namespace LLZipLib
 {
@@ -24,7 +23,7 @@ namespace LLZipLib
 			header.ZipEntry = this;
 			CentralDirectoryHeader = header;
 			reader.BaseStream.Seek(header.LocalHeaderOffset, SeekOrigin.Begin);
-			LocalFileHeader = new LocalFileHeader(reader);
+			LocalFileHeader = new LocalFileHeader(reader) {ZipEntry = this};
 			Data = reader.ReadBytes(LocalFileHeader.CompressedSize);
 
 			if (HasDataDescriptor)

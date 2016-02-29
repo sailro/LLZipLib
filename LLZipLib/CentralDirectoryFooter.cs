@@ -9,13 +9,19 @@ namespace LLZipLib
 		public ZipArchive ZipArchive { get; set; }
 
 		public uint Signature { get; private set; }
-		public byte[] Comment { get; set; }
 		public uint CentralDirectoryOffset { get; private set; }
 		public uint CentralDirectorySize { get; set; }
 		public ushort TotalDiskEntries { get; set; }
 		public ushort DiskEntries { get; set; }
 		public ushort CentralDirectoryDiskNumber { get; set; }
 		public ushort DiskNumber { get; set; }
+
+		private byte[] CommentBuffer { get; set; }
+		public string Comment
+		{
+			get { return ZipArchive.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment); }
+			set { CommentBuffer = ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Comment); }
+		}
 
 		public CentralDirectoryFooter(ZipArchive archive)
 		{
@@ -40,7 +46,7 @@ namespace LLZipLib
 			CentralDirectorySize = reader.ReadUInt32();
 			CentralDirectoryOffset = reader.ReadUInt32();
 			var commentLength = reader.ReadUInt16();
-			Comment = reader.ReadBytes(commentLength);
+			CommentBuffer = reader.ReadBytes(commentLength);
 		}
 
 		private bool TrySeekToSignature(BinaryReader reader)
@@ -63,7 +69,7 @@ namespace LLZipLib
 
 		internal override int GetSize()
 		{
-			return 3*sizeof (uint) + 5*sizeof (ushort) + (Comment?.Length ?? 0);
+			return 3*sizeof (uint) + 5*sizeof (ushort) + (CommentBuffer?.Length ?? 0);
 		}
 
 		internal void Write(BinaryWriter writer)
@@ -88,9 +94,9 @@ namespace LLZipLib
 			writer.Write(CentralDirectorySize);
 			writer.Write(CentralDirectoryOffset);
 
-			writer.Write((ushort) Comment.Length);
-			if (Comment != null)
-				writer.Write(Comment, 0, Comment.Length);
+			writer.Write((ushort) CommentBuffer.Length);
+			if (CommentBuffer != null)
+				writer.Write(CommentBuffer, 0, CommentBuffer.Length);
 		}
 	}
 }

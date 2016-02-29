@@ -8,6 +8,7 @@ namespace LLZipLib
 {
 	public class ZipArchive : Block
 	{
+		public IStringConverter StringConverter => new DefaultStringConverter();
 		public CentralDirectoryFooter CentralDirectoryFooter { get; private set; }
 		public IList<ZipEntry> Entries { get; }
 

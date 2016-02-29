@@ -67,6 +67,14 @@ namespace LLZipLib.Test
 				zip.Read(file);
 				var tmpFile = Path.GetTempFileName();
 
+				foreach (var zipEntry in zip.Entries)
+				{
+					// this will test the IStringConverter default implementation
+					zipEntry.CentralDirectoryHeader.Comment = zipEntry.CentralDirectoryHeader.Comment;
+					zipEntry.CentralDirectoryHeader.Filename = zipEntry.CentralDirectoryHeader.Filename;
+					zipEntry.LocalFileHeader.Filename = zipEntry.LocalFileHeader.Filename;
+				}
+
 				zip.Write(tmpFile);
 				CompareFiles(file, tmpFile);
 			}

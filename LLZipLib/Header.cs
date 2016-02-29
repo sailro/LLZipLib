@@ -8,7 +8,7 @@
 		public ushort Compression { get; set; }
 		public ushort Date { get; set; }
 		public ushort Time { get; set; }
-		public byte[] Filename { get; set; }
 		public byte[] Extra { get; set; }
+		protected byte[] FilenameBuffer { get; set; }
 	}
 }

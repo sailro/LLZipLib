@@ -5,6 +5,8 @@ namespace LLZipLib
 {
 	public class LocalFileHeader : Header
 	{
+		public ZipEntry ZipEntry { get; set; }
+
 		public LocalFileHeader(BinaryReader reader)
 		{
 			Offset = reader.BaseStream.Position;
@@ -23,13 +25,19 @@ namespace LLZipLib
 			UncompressedSize = reader.ReadInt32();
 			var filenameLength = reader.ReadUInt16();
 			var extraLength = reader.ReadUInt16();
-			Filename = reader.ReadBytes(filenameLength);
+			FilenameBuffer = reader.ReadBytes(filenameLength);
 			Extra = reader.ReadBytes(extraLength);
+		}
+
+		public string Filename
+		{
+			get { return ZipEntry.ZipArchive.StringConverter.GetString(FilenameBuffer, StringConverterContext.Filename); }
+			set { FilenameBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Filename); }
 		}
 
 		internal override int GetSize()
 		{
-			return 4*sizeof (uint) + 7*sizeof (ushort) + (Filename?.Length ?? 0) + (Extra?.Length ?? 0);
+			return 4*sizeof (uint) + 7*sizeof (ushort) + (FilenameBuffer?.Length ?? 0) + (Extra?.Length ?? 0);
 		}
 
 		internal void Write(BinaryWriter writer)
@@ -45,11 +53,11 @@ namespace LLZipLib
 			writer.Write(Crc);
 			writer.Write(CompressedSize);
 			writer.Write(UncompressedSize);
-			writer.Write((ushort) (Filename?.Length ?? 0));
+			writer.Write((ushort) (FilenameBuffer?.Length ?? 0));
 			writer.Write((ushort) (Extra?.Length ?? 0));
 
-			if (Filename != null)
-				writer.Write(Filename, 0, Filename.Length);
+			if (FilenameBuffer != null)
+				writer.Write(FilenameBuffer, 0, FilenameBuffer.Length);
 			if (Extra != null)
 				writer.Write(Extra, 0, Extra.Length);
 		}
