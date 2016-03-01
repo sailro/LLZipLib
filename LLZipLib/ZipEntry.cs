@@ -44,7 +44,9 @@ namespace LLZipLib
 			CentralDirectoryHeader = header;
 			reader.BaseStream.Seek(header.LocalHeaderOffset, SeekOrigin.Begin);
 			LocalFileHeader = new LocalFileHeader(reader) {ZipEntry = this};
-			Data = reader.ReadBytes(LocalFileHeader.CompressedSize);
+
+			// do not trigger CRC or CompressedSize recomputation
+			_data = reader.ReadBytes(LocalFileHeader.CompressedSize);
 
 			if (HasDataDescriptor)
 				DataDescriptor = new DataDescriptor(reader);
