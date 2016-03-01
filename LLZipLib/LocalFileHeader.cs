@@ -7,12 +7,18 @@ namespace LLZipLib
 	{
 		public ZipEntry ZipEntry { get; set; }
 
+		public LocalFileHeader(ZipEntry zipEntry)
+		{
+			ZipEntry = zipEntry;
+			Signature = Signatures.LocalFileHeader;
+		}
+
 		public LocalFileHeader(BinaryReader reader)
 		{
 			Offset = reader.BaseStream.Position;
 
 			Signature = reader.ReadUInt32();
-			if (Signature != 0x04034B50)
+			if (Signature != Signatures.LocalFileHeader)
 				throw new NotSupportedException("bad signature");
 
 			Version = reader.ReadUInt16();

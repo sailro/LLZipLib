@@ -8,7 +8,7 @@ namespace LLZipLib
 	{
 		public ZipArchive ZipArchive { get; set; }
 
-		public uint Signature { get; private set; }
+		public uint Signature { get; private set; } = Signatures.CentralDirectoryFooter;
 		public uint CentralDirectoryOffset { get; private set; }
 		public uint CentralDirectorySize { get; set; }
 		public ushort TotalDiskEntries { get; set; }
@@ -16,7 +16,7 @@ namespace LLZipLib
 		public ushort CentralDirectoryDiskNumber { get; set; }
 		public ushort DiskNumber { get; set; }
 
-		public byte[] CommentBuffer { get; set; }
+		public byte[] CommentBuffer { get; set; } = {};
 		public string Comment
 		{
 			get { return ZipArchive.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment); }
@@ -57,7 +57,7 @@ namespace LLZipLib
 			while (currentPosition >= 0)
 			{
 				Signature = reader.ReadUInt32();
-				if (Signature == 0x06054B50)
+				if (Signature == Signatures.CentralDirectoryFooter)
 				{
 					Offset = currentPosition;
 					return true;

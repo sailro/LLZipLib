@@ -46,6 +46,7 @@
     <Compile Include="LocalFileHeader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DefaultStringConverter.cs" />
+    <Compile Include="Signatures.cs" />
     <Compile Include="ZipArchive.cs" />
     <Compile Include="ZipEntry.cs" />
   </ItemGroup>

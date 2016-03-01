@@ -7,10 +7,10 @@ namespace LLZipLib
 		public ZipArchive ZipArchive { get; set; }
 
 		public CentralDirectoryHeader CentralDirectoryHeader { get; }
-		public LocalFileHeader LocalFileHeader { get; }
+		public LocalFileHeader LocalFileHeader { get; set;  }
 		public DataDescriptor DataDescriptor { get; set; }
 
-		public byte[] _data;
+		public byte[] _data = {};
 		public byte[] Data
 		{
 			get
@@ -28,6 +28,7 @@ namespace LLZipLib
 
 				LocalFileHeader.Crc = CentralDirectoryHeader.Crc = Crc32Helper.UpdateCrc32(LocalFileHeader.Crc, _data, 0, _data.Length);
 				LocalFileHeader.CompressedSize = CentralDirectoryHeader.CompressedSize = _data.Length;
+				LocalFileHeader.UncompressedSize = CentralDirectoryHeader.UncompressedSize = _data.Length;
 			}
 		}
 
@@ -36,6 +37,8 @@ namespace LLZipLib
 		public ZipEntry(ZipArchive archive)
 		{
 			ZipArchive = archive;
+			LocalFileHeader = new LocalFileHeader(this);
+			CentralDirectoryHeader = new CentralDirectoryHeader(this);
 		}
 
 		public ZipEntry(ZipArchive archive, BinaryReader reader, CentralDirectoryHeader header) : this(archive)

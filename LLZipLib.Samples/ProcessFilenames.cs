@@ -13,7 +13,7 @@ namespace LLZipLib.Samples
 			var zip = new ZipArchive();
 			zip.Read(filename);
 
-			foreach (var entry in zip.Entries.Where(entry => entry.HasDataDescriptor))
+			foreach (var entry in zip.Entries)
 			{
 				entry.LocalFileHeader.Filename = "foo." + entry.LocalFileHeader.Filename;
 				entry.CentralDirectoryHeader.Filename = entry.LocalFileHeader.Filename;

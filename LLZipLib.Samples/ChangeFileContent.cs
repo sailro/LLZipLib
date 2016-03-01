@@ -19,7 +19,6 @@ namespace LLZipLib.Samples
 				entry.Data = zip.StringConverter.GetBytes("This is my new content", StringConverterContext.Content);
 				// this is not compressed
 				entry.LocalFileHeader.Compression = entry.CentralDirectoryHeader.Compression = 0;
-				entry.LocalFileHeader.UncompressedSize = entry.CentralDirectoryHeader.UncompressedSize = entry.Data.Length;
 			}
 
 			zip.Write(filename);

@@ -13,7 +13,7 @@ namespace LLZipLib
 		public ushort DiskNumber { get; set; }
 		public ushort VersionNeeded { get; set; }
 
-		public byte[] CommentBuffer { get; set; }
+		public byte[] CommentBuffer { get; set; } = {};
 		public string Comment
 		{
 			get { return ZipEntry.ZipArchive.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment); }
@@ -26,13 +26,10 @@ namespace LLZipLib
 			set { FilenameBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Filename); }
 		}
 
-		public CentralDirectoryHeader()
-		{
-		}
-
 		public CentralDirectoryHeader(ZipEntry zipEntry)
 		{
 			ZipEntry = zipEntry;
+			Signature = Signatures.CentralDirectoryHeader;
 		}
 
 		public CentralDirectoryHeader(BinaryReader reader)
@@ -40,7 +37,7 @@ namespace LLZipLib
 			Offset = reader.BaseStream.Position;
 
 			Signature = reader.ReadUInt32();
-			if (Signature != 0x02014B50)
+			if (Signature != Signatures.CentralDirectoryHeader)
 				throw new NotSupportedException("bad signature");
 
 			Version = reader.ReadUInt16();
