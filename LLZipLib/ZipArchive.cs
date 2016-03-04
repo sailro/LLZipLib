@@ -10,40 +10,46 @@ namespace LLZipLib
 	{
 		public IStringConverter StringConverter => new DefaultStringConverter();
 		public CentralDirectoryFooter CentralDirectoryFooter { get; private set; }
-		public IList<ZipEntry> Entries { get; }
+		public ZipEntryCollection Entries { get; }
 
 		public ZipArchive()
 		{
-			CentralDirectoryFooter = new CentralDirectoryFooter(this);
-			Entries = new List<ZipEntry>();
+			CentralDirectoryFooter = new CentralDirectoryFooter {ZipArchive = this};
+			Entries = new ZipEntryCollection(this);
 		}
 
-		public void Read(string filename)
+		public static ZipArchive Read(string filename)
 		{
 			using (var stream = new FileStream(filename, FileMode.Open, FileAccess.Read))
-				Read(stream);
+				return Read(stream);
 		}
 
-		public void Read(Stream stream)
+		public static ZipArchive Read(Stream stream)
 		{
 			using (var reader = new BinaryReader(stream, Encoding.ASCII))
-				Read(reader);
+				return Read(reader);
 		}
 
-		public void Read(BinaryReader reader)
+		public static ZipArchive Read(BinaryReader reader)
 		{
-			Offset = reader.BaseStream.Position;
-			CentralDirectoryFooter = new CentralDirectoryFooter(this, reader);
+			var zip = new ZipArchive
+			{
+				Offset = reader.BaseStream.Position,
+				CentralDirectoryFooter = CentralDirectoryFooter.Read(reader)
+			};
 
-			Entries.Clear();
+			zip.CentralDirectoryFooter.ZipArchive = zip;
+
 			var headers = new List<CentralDirectoryHeader>();
-			reader.BaseStream.Seek(CentralDirectoryFooter.CentralDirectoryOffset, SeekOrigin.Begin);
+			reader.BaseStream.Seek(zip.CentralDirectoryFooter.CentralDirectoryOffset, SeekOrigin.Begin);
 
-			for (var i = 0; i < CentralDirectoryFooter.DiskEntries; i++)
-				headers.Add(new CentralDirectoryHeader(reader));
+			for (var i = 0; i < zip.CentralDirectoryFooter.DiskEntries; i++)
+				headers.Add(CentralDirectoryHeader.Read(reader));
 
 			foreach (var header in headers)
-				Entries.Add(new ZipEntry(this, reader, header));
+				zip.Entries.Add(ZipEntry.Read(reader, header));
+
+			return zip;
 		}
 
 		public void Write(string filename)

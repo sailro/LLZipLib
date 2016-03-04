@@ -8,8 +8,7 @@ How to use it:
 
 ## Changing file content
 ```csharp
-var zip = new ZipArchive();
-zip.Read(filename);
+var zip = ZipArchive.Read(filename);
 
 var entry = zip.Entries.FirstOrDefault(e => e.LocalFileHeader.Filename == "readme.txt");
 if (entry != null)
@@ -24,8 +23,7 @@ zip.Write(filename);
 
 ## Processing file names
 ```csharp
-var zip = new ZipArchive();
-zip.Read(filename);
+var zip = ZipArchive.Read(filename);
 
 foreach (var entry in zip.Entries)
 {
@@ -39,7 +37,7 @@ zip.Write(filename);
 ## Creating archive / adding entry
 ```csharp
 var zip = new ZipArchive();
-var entry = new ZipEntry(zip);
+var entry = new ZipEntry();
 
 entry.LocalFileHeader.Filename = entry.CentralDirectoryHeader.Filename = "foo.txt";
 entry.Data = zip.StringConverter.GetBytes("Hello world!", StringConverterContext.Content);
@@ -50,8 +48,7 @@ zip.Write("foo.zip");
 
 ## Removing all data descriptors
 ```csharp
-var zip = new ZipArchive();
-zip.Read(filename);
+var zip = ZipArchive.Read(filename);
 
 foreach (var entry in zip.Entries.Where(entry => entry.HasDataDescriptor))
 {
@@ -67,7 +64,7 @@ zip.Write(filename);
 
 ## Removing all extra blocks
 ```csharp
-zip.Read(filename);
+var zip = ZipArchive.Read(filename);
 
 foreach (var entry in zip.Entries)
 {

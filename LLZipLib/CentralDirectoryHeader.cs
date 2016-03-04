@@ -26,39 +26,9 @@ namespace LLZipLib
 			set { FilenameBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Filename); }
 		}
 
-		public CentralDirectoryHeader(ZipEntry zipEntry)
+		public CentralDirectoryHeader()
 		{
-			ZipEntry = zipEntry;
 			Signature = Signatures.CentralDirectoryHeader;
-		}
-
-		public CentralDirectoryHeader(BinaryReader reader)
-		{
-			Offset = reader.BaseStream.Position;
-
-			Signature = reader.ReadUInt32();
-			if (Signature != Signatures.CentralDirectoryHeader)
-				throw new NotSupportedException("bad signature");
-
-			Version = reader.ReadUInt16();
-			VersionNeeded = reader.ReadUInt16();
-			Flags = reader.ReadUInt16();
-			Compression = reader.ReadUInt16();
-			Time = reader.ReadUInt16();
-			Date = reader.ReadUInt16();
-			Crc = reader.ReadUInt32();
-			CompressedSize = reader.ReadInt32();
-			UncompressedSize = reader.ReadInt32();
-			var filenameLength = reader.ReadUInt16();
-			var extraLength = reader.ReadUInt16();
-			var commentLength = reader.ReadUInt16();
-			DiskNumber = reader.ReadUInt16();
-			InternalAttribute = reader.ReadUInt16();
-			ExternalAttribute = reader.ReadUInt32();
-			LocalHeaderOffset = reader.ReadUInt32();
-			FilenameBuffer = reader.ReadBytes(filenameLength);
-			Extra = reader.ReadBytes(extraLength);
-			CommentBuffer = reader.ReadBytes(commentLength);
 		}
 
 		internal override int GetSize()
@@ -66,8 +36,45 @@ namespace LLZipLib
 			return 6*sizeof (uint) + 11*sizeof (ushort) + (FilenameBuffer?.Length ?? 0) + (Extra?.Length ?? 0) + (Comment?.Length ?? 0);
 		}
 
+		internal static CentralDirectoryHeader Read(BinaryReader reader)
+		{
+			var header = new CentralDirectoryHeader
+			{
+				Offset = reader.BaseStream.Position,
+				Signature = reader.ReadUInt32()
+			};
+
+			if (header.Signature != Signatures.CentralDirectoryHeader)
+				throw new NotSupportedException("bad signature");
+
+			header.Version = reader.ReadUInt16();
+			header.VersionNeeded = reader.ReadUInt16();
+			header.Flags = reader.ReadUInt16();
+			header.Compression = reader.ReadUInt16();
+			header.Time = reader.ReadUInt16();
+			header.Date = reader.ReadUInt16();
+			header.Crc = reader.ReadUInt32();
+			header.CompressedSize = reader.ReadInt32();
+			header.UncompressedSize = reader.ReadInt32();
+			var filenameLength = reader.ReadUInt16();
+			var extraLength = reader.ReadUInt16();
+			var commentLength = reader.ReadUInt16();
+			header.DiskNumber = reader.ReadUInt16();
+			header.InternalAttribute = reader.ReadUInt16();
+			header.ExternalAttribute = reader.ReadUInt32();
+			header.LocalHeaderOffset = reader.ReadUInt32();
+			header.FilenameBuffer = reader.ReadBytes(filenameLength);
+			header.Extra = reader.ReadBytes(extraLength);
+			header.CommentBuffer = reader.ReadBytes(commentLength);
+
+			return header;
+		}
+
 		internal void Write(BinaryWriter writer)
 		{
+			if (ZipEntry == null)
+				throw new InvalidOperationException("this header must be linked to a ZipEntry");
+
 			Offset = writer.BaseStream.Position;
 
 			writer.Write(Signature);

@@ -4,13 +4,18 @@ namespace LLZipLib
 {
 	public class DataDescriptor : Descriptor
 	{
-		public DataDescriptor(BinaryReader reader)
-		{
-			Offset = reader.BaseStream.Position;
 
-			Crc = reader.ReadUInt32();
-			CompressedSize = reader.ReadInt32();
-			UncompressedSize = reader.ReadInt32();
+		internal static DataDescriptor Read(BinaryReader reader)
+		{
+			var descriptor = new DataDescriptor
+			{
+				Offset = reader.BaseStream.Position,
+				Crc = reader.ReadUInt32(),
+				CompressedSize = reader.ReadInt32(),
+				UncompressedSize = reader.ReadInt32()
+			};
+
+			return descriptor;
 		}
 
 		internal void Write(BinaryWriter writer)

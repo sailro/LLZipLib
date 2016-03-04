@@ -10,8 +10,7 @@ namespace LLZipLib.Samples
 				return 1;
 			var filename = args[0];
 
-			var zip = new ZipArchive();
-			zip.Read(filename);
+			var zip = ZipArchive.Read(filename);
 
 			var entry = zip.Entries.FirstOrDefault(e => e.LocalFileHeader.Filename == "readme.txt");
 			if (entry != null)

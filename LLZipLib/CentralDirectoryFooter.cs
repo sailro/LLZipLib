@@ -23,43 +23,17 @@ namespace LLZipLib
 			set { CommentBuffer = ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Comment); }
 		}
 
-		public CentralDirectoryFooter(ZipArchive archive)
+		private static bool TrySeekToSignature(BinaryReader reader, CentralDirectoryFooter footer)
 		{
-			ZipArchive = archive;
-		}
-
-		public CentralDirectoryFooter(ZipArchive archive, BinaryReader reader) : this(archive)
-		{
-			if (!TrySeekToSignature(reader))
-				throw new NotSupportedException("bad signature");
-
-			DiskNumber = reader.ReadUInt16();
-			CentralDirectoryDiskNumber = reader.ReadUInt16();
-			if (DiskNumber != 0 || CentralDirectoryDiskNumber != 0)
-				throw new NotSupportedException("bad disk number");
-
-			DiskEntries = reader.ReadUInt16();
-			TotalDiskEntries = reader.ReadUInt16();
-			if (DiskEntries != TotalDiskEntries)
-				throw new NotSupportedException("multiple volumes are not supported");
-
-			CentralDirectorySize = reader.ReadUInt32();
-			CentralDirectoryOffset = reader.ReadUInt32();
-			var commentLength = reader.ReadUInt16();
-			CommentBuffer = reader.ReadBytes(commentLength);
-		}
-
-		private bool TrySeekToSignature(BinaryReader reader)
-		{
-			var currentPosition = reader.BaseStream.Seek(-GetSize(), SeekOrigin.End);
+			var currentPosition = reader.BaseStream.Seek(-footer.GetSize(), SeekOrigin.End);
 			const int signatureLength = sizeof(uint);
 
 			while (currentPosition >= 0)
 			{
-				Signature = reader.ReadUInt32();
-				if (Signature == Signatures.CentralDirectoryFooter)
+				footer.Signature = reader.ReadUInt32();
+				if (footer.Signature == Signatures.CentralDirectoryFooter)
 				{
-					Offset = currentPosition;
+					footer.Offset = currentPosition;
 					return true;
 				}
 				currentPosition = reader.BaseStream.Seek(-signatureLength - 1, SeekOrigin.Current);
@@ -72,24 +46,50 @@ namespace LLZipLib
 			return 3*sizeof (uint) + 5*sizeof (ushort) + (CommentBuffer?.Length ?? 0);
 		}
 
+		internal static CentralDirectoryFooter Read(BinaryReader reader)
+		{
+			var footer = new CentralDirectoryFooter();
+			if (!TrySeekToSignature(reader, footer))
+				throw new NotSupportedException("bad signature");
+
+			footer.DiskNumber = reader.ReadUInt16();
+			footer.CentralDirectoryDiskNumber = reader.ReadUInt16();
+			if (footer.DiskNumber != 0 || footer.CentralDirectoryDiskNumber != 0)
+				throw new NotSupportedException("bad disk number");
+
+			footer.DiskEntries = reader.ReadUInt16();
+			footer.TotalDiskEntries = reader.ReadUInt16();
+			if (footer.DiskEntries != footer.TotalDiskEntries)
+				throw new NotSupportedException("multiple volumes are not supported");
+
+			footer.CentralDirectorySize = reader.ReadUInt32();
+			footer.CentralDirectoryOffset = reader.ReadUInt32();
+			var commentLength = reader.ReadUInt16();
+			footer.CommentBuffer = reader.ReadBytes(commentLength);
+
+			return footer;
+		}
+
 		internal void Write(BinaryWriter writer)
 		{
+			//At this time, everything is written
+			var zip = ZipArchive;
+			if (zip == null)
+				throw new InvalidOperationException("this footer must be linked to a ZipArchive");
+
 			Offset = writer.BaseStream.Position;
 
 			writer.Write(Signature);
 			writer.Write(DiskNumber);
 			writer.Write(CentralDirectoryDiskNumber);
 
-			//At this time, everything is written
-			var archive = ZipArchive;
-
-			DiskEntries = TotalDiskEntries = (ushort) archive.Entries.Count;
+			DiskEntries = TotalDiskEntries = (ushort) zip.Entries.Count;
 			writer.Write(DiskEntries);
 			writer.Write(TotalDiskEntries);
 
-			var firstEntry = archive.Entries.FirstOrDefault();
+			var firstEntry = zip.Entries.FirstOrDefault();
 			CentralDirectoryOffset = (uint) (firstEntry?.CentralDirectoryHeader.Offset ?? 0);
-			CentralDirectorySize = (uint) archive.Entries.Sum(entry => entry.CentralDirectoryHeader.GetSize());
+			CentralDirectorySize = (uint) zip.Entries.Sum(entry => entry.CentralDirectoryHeader.GetSize());
 
 			writer.Write(CentralDirectorySize);
 			writer.Write(CentralDirectoryOffset);

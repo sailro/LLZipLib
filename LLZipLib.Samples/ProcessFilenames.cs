@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace LLZipLib.Samples
+﻿namespace LLZipLib.Samples
 {
 	internal class ProcessFilenames
 	{
@@ -10,8 +8,7 @@ namespace LLZipLib.Samples
 				return 1;
 			var filename = args[0];
 
-			var zip = new ZipArchive();
-			zip.Read(filename);
+			var zip = ZipArchive.Read(filename);
 
 			foreach (var entry in zip.Entries)
 			{

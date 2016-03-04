@@ -7,32 +7,37 @@ namespace LLZipLib
 	{
 		public ZipEntry ZipEntry { get; set; }
 
-		public LocalFileHeader(ZipEntry zipEntry)
+		public LocalFileHeader()
 		{
-			ZipEntry = zipEntry;
 			Signature = Signatures.LocalFileHeader;
 		}
 
-		public LocalFileHeader(BinaryReader reader)
+		public static LocalFileHeader Read(BinaryReader reader)
 		{
-			Offset = reader.BaseStream.Position;
+			var header = new LocalFileHeader
+			{
+				Offset = reader.BaseStream.Position,
+				Signature = reader.ReadUInt32()
+			};
 
-			Signature = reader.ReadUInt32();
-			if (Signature != Signatures.LocalFileHeader)
+			if (header.Signature != Signatures.LocalFileHeader)
 				throw new NotSupportedException("bad signature");
 
-			Version = reader.ReadUInt16();
-			Flags = reader.ReadUInt16();
-			Compression = reader.ReadUInt16();
-			Time = reader.ReadUInt16();
-			Date = reader.ReadUInt16();
-			Crc = reader.ReadUInt32();
-			CompressedSize = reader.ReadInt32();
-			UncompressedSize = reader.ReadInt32();
+			header.Version = reader.ReadUInt16();
+			header.Flags = reader.ReadUInt16();
+			header.Compression = reader.ReadUInt16();
+			header.Time = reader.ReadUInt16();
+			header.Date = reader.ReadUInt16();
+			header.Crc = reader.ReadUInt32();
+			header.CompressedSize = reader.ReadInt32();
+			header.UncompressedSize = reader.ReadInt32();
+
 			var filenameLength = reader.ReadUInt16();
 			var extraLength = reader.ReadUInt16();
-			FilenameBuffer = reader.ReadBytes(filenameLength);
-			Extra = reader.ReadBytes(extraLength);
+			header.FilenameBuffer = reader.ReadBytes(filenameLength);
+			header.Extra = reader.ReadBytes(extraLength);
+
+			return header;
 		}
 
 		public string Filename

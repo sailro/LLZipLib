@@ -12,8 +12,7 @@ namespace LLZipLib.Tests
 			foreach (var file in Directory.GetFiles(_filesDirectory))
 			{
 				TestContext.WriteLine("Testing {0}", file);
-				var zip = new ZipArchive();
-				zip.Read(file);
+				var zip = ZipArchive.Read(file);
 				var tmpFile = Path.GetTempFileName();
 
 				foreach (var zipEntry in zip.Entries)
