@@ -17,8 +17,7 @@ namespace LLZipLib.Samples
 				entry.LocalFileHeader.CompressedSize = entry.DataDescriptor.CompressedSize;
 				entry.LocalFileHeader.UncompressedSize = entry.DataDescriptor.UncompressedSize;
 				entry.LocalFileHeader.Crc = entry.DataDescriptor.Crc;
-				entry.LocalFileHeader.Flags = (ushort)(entry.LocalFileHeader.Flags & ~4); 
-				entry.DataDescriptor = null;
+				entry.HasDataDescriptor = false;
 			}
 
 			zip.Write(filename);

@@ -23,19 +23,53 @@ namespace LLZipLib
 
 				LocalFileHeader.Crc = 0;
 				LocalFileHeader.CompressedSize = CentralDirectoryHeader.CompressedSize = 0;
+				LocalFileHeader.UncompressedSize = CentralDirectoryHeader.UncompressedSize = 0;
+				if (HasDataDescriptor)
+				{
+					DataDescriptor.Crc = 0;
+					DataDescriptor.CompressedSize = 0;
+					DataDescriptor.UncompressedSize = 0;
+				}
 
 				if (_data == null)
 					return;
 
-				LocalFileHeader.Crc =
-					CentralDirectoryHeader.Crc = Crc32Helper.UpdateCrc32(LocalFileHeader.Crc, _data, 0, _data.Length);
-				LocalFileHeader.CompressedSize = CentralDirectoryHeader.CompressedSize = _data.Length;
-				LocalFileHeader.UncompressedSize = CentralDirectoryHeader.UncompressedSize = _data.Length;
+				var crc = Crc32Helper.UpdateCrc32(LocalFileHeader.Crc, _data, 0, _data.Length);
+				var length = _data.Length;
+				if (HasDataDescriptor)
+				{
+					DataDescriptor.Crc = crc;
+					DataDescriptor.CompressedSize = _data.Length;
+					DataDescriptor.UncompressedSize = _data.Length;
+				}
+				else
+				{
+					LocalFileHeader.Crc = crc;
+					LocalFileHeader.CompressedSize = length;
+					LocalFileHeader.UncompressedSize = length;
+				}
+				CentralDirectoryHeader.Crc = crc;
+				CentralDirectoryHeader.CompressedSize = length;
+				CentralDirectoryHeader.UncompressedSize = length;
 			}
 		}
 
-		public bool HasDataDescriptor => (LocalFileHeader.Flags & 4) != 0;
+		public bool HasDataDescriptor
+		{
+			get
+			{
+				return (LocalFileHeader.Flags & 8) != 0;
+			}
+			set
+			{
+				if (value)
+					LocalFileHeader.Flags |= 8;
+				else
+					LocalFileHeader.Flags = (ushort)(LocalFileHeader.Flags & ~8);
+			}
 
+		}
+			
 		public ZipEntry()
 		{
 			CentralDirectoryHeader = new CentralDirectoryHeader {ZipEntry = this};
@@ -53,7 +87,7 @@ namespace LLZipLib
 			entry.LocalFileHeader.ZipEntry = entry;
 
 			// do not trigger CRC or [Un]CompressedSize recomputation
-			entry._data = reader.ReadBytes(entry.LocalFileHeader.CompressedSize);
+			entry._data = reader.ReadBytes(header.CompressedSize);
 
 			if (entry.HasDataDescriptor)
 				entry.DataDescriptor = DataDescriptor.Read(reader);

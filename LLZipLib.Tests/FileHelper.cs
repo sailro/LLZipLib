@@ -29,9 +29,9 @@ namespace LLZipLib.Tests
 
 		public static void CompareFiles(string original, string compared)
 		{
-			using (var fsoriginal = new FileStream(original, FileMode.Open))
+			using (var fsoriginal = new BufferedStream(new FileStream(original, FileMode.Open)))
 			{
-				using (var fscompared = new FileStream(compared, FileMode.Open))
+				using (var fscompared = new BufferedStream(new FileStream(compared, FileMode.Open)))
 				{
 					CompareFiles(fsoriginal, fscompared);
 				}
