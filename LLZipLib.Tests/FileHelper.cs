@@ -1,4 +1,5 @@
 using System.IO;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LLZipLib.Tests
@@ -16,26 +17,20 @@ namespace LLZipLib.Tests
 			}
 		}
 
-		public static void CompareFiles(Stream soriginal, Stream scompared)
+		public static BinaryReader LoadInMemory(string filename)
 		{
-			using (var reoriginal = new BinaryReader(soriginal))
+			using (var stream = new BufferedStream(new FileStream(filename, FileMode.Open)))
 			{
-				using (var recompared = new BinaryReader(scompared))
-				{
-					CompareFiles(reoriginal, recompared);
-				}
+				var memory = new MemoryStream();
+				stream.CopyTo(memory);
+				memory.Seek(0, SeekOrigin.Begin);
+				return new BinaryReader(memory);
 			}
 		}
 
 		public static void CompareFiles(string original, string compared)
 		{
-			using (var fsoriginal = new BufferedStream(new FileStream(original, FileMode.Open)))
-			{
-				using (var fscompared = new BufferedStream(new FileStream(compared, FileMode.Open)))
-				{
-					CompareFiles(fsoriginal, fscompared);
-				}
-			}
+			CompareFiles(LoadInMemory(original), LoadInMemory(compared));
 		}
 	}
 }
