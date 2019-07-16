@@ -32,11 +32,7 @@ namespace LLZipLib
 
 		public static ZipArchive Read(BinaryReader reader)
 		{
-			var zip = new ZipArchive
-			{
-				Offset = reader.BaseStream.Position,
-				CentralDirectoryFooter = CentralDirectoryFooter.Read(reader)
-			};
+			var zip = new ZipArchive {Offset = reader.BaseStream.Position, CentralDirectoryFooter = CentralDirectoryFooter.Read(reader)};
 
 			zip.CentralDirectoryFooter.ZipArchive = zip;
 
