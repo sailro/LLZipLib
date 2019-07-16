@@ -10,10 +10,7 @@ namespace LLZipLib.Tests
 
 		public TestContext TestContext
 		{
-			get
-			{
-				return _testContextInstance;
-			}
+			get => _testContextInstance;
 			set
 			{
 				_testContextInstance = value;

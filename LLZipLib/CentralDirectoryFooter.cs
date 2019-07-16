@@ -19,9 +19,9 @@ namespace LLZipLib
 		public byte[] CommentBuffer { get; set; } = {};
 		public string Comment
 		{
-			get { return ZipArchive.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment); }
-			set { CommentBuffer = ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Comment); }
-		}
+			get => ZipArchive.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment);
+            set => CommentBuffer = ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Comment);
+        }
 
 		private static bool TrySeekToSignature(BinaryReader reader, CentralDirectoryFooter footer)
 		{

@@ -16,15 +16,15 @@ namespace LLZipLib
 		public byte[] CommentBuffer { get; set; } = {};
 		public string Comment
 		{
-			get { return ZipEntry.ZipArchive.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment); }
-			set { CommentBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Comment); }
-		}
+			get => ZipEntry.ZipArchive.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment);
+            set => CommentBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Comment);
+        }
 
 		public string Filename
 		{
-			get { return ZipEntry.ZipArchive.StringConverter.GetString(FilenameBuffer, StringConverterContext.Filename); }
-			set { FilenameBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Filename); }
-		}
+			get => ZipEntry.ZipArchive.StringConverter.GetString(FilenameBuffer, StringConverterContext.Filename);
+            set => FilenameBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Filename);
+        }
 
 		public CentralDirectoryHeader()
 		{

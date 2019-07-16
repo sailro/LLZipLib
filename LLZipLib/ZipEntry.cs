@@ -13,10 +13,7 @@ namespace LLZipLib
 		public byte[] _data = {};
 		public byte[] Data
 		{
-			get
-			{
-				return _data;
-			}
+			get => _data;
 			set
 			{
 				_data = value;
@@ -56,10 +53,7 @@ namespace LLZipLib
 
 		public bool HasDataDescriptor
 		{
-			get
-			{
-				return (LocalFileHeader.Flags & 8) != 0;
-			}
+			get => (LocalFileHeader.Flags & 8) != 0;
 			set
 			{
 				if (value)
