@@ -1,5 +1,8 @@
-# LLZipLib [![Build Status](https://sailro.visualstudio.com/LLZipLib/_apis/build/status/sailro.LLZipLib?branchName=master)](https://sailro.visualstudio.com/LLZipLib/_build/latest?definitionId=5&branchName=master)
-Low level Zip Library, allowing advanced tweaks (injecting/removing extra blocks, altering flags, crafting special archives). Self contained, no third party dependencies. If you just want to unzip files, this is not for you :)
+# LLZipLib 
+[![Build status](https://github.com/sailro/LLZipLib/workflows/CI/badge.svg)](https://github.com/sailro/LLZipLib/actions?query=workflow%3ACI)
+[![NuGet](https://img.shields.io/nuget/v/LLZipLib.svg)](https://www.nuget.org/packages/LLZipLib/)
+
+Low-level Zip Library, allowing advanced tweaks (injecting/removing extra blocks, altering flags, crafting special archives). Self contained, no third party dependencies. If you just want to unzip files, this is not for you :)
 
 .ZIP File Format Specification:
 https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT
