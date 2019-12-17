@@ -5,6 +5,7 @@ namespace LLZipLib
 	public class ZipEntryCollection : Collection<ZipEntry>
 	{
 		private ZipArchive ZipArchive { get; }
+
 		public ZipEntryCollection(ZipArchive zipArchive)
 		{
 			ZipArchive = zipArchive;

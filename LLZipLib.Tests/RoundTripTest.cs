@@ -9,7 +9,7 @@ namespace LLZipLib.Tests
 		[TestMethod]
 		public void TestRoundTrip()
 		{
-			foreach (var file in Directory.GetFiles(_filesDirectory))
+			foreach (var file in Directory.GetFiles(GetTestDirectory()))
 			{
 				TestContext.WriteLine("Testing {0}", file);
 				var zip = ZipArchive.Read(file);

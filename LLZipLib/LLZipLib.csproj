@@ -1,62 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0449987E-4F5D-4781-B8BB-6866E200F9FE}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LLZipLib</RootNamespace>
-    <AssemblyName>LLZipLib</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard2.0</TargetFramework>
+	
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	
+    <Authors>Sebastien Lebreton</Authors>
+    <RepositoryUrl>https://github.com/sailro/LLZipLib</RepositoryUrl>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <Copyright>Sebastien Lebreton</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageTags>ZIP Low-Level injecting crafting</PackageTags>
+    <Description>Low level Zip Library, allowing advanced tweaks (injecting/removing extra blocks, altering flags, crafting special archives)</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/sailro/LLZipLib</PackageProjectUrl>	
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+  
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Block.cs" />
-    <Compile Include="CentralDirectoryFooter.cs" />
-    <Compile Include="CentralDirectoryHeader.cs" />
-    <Compile Include="Crc32Helper.cs" />
-    <Compile Include="DataDescriptor.cs" />
-    <Compile Include="Descriptor.cs" />
-    <Compile Include="Header.cs" />
-    <Compile Include="IStringConverter.cs" />
-    <Compile Include="LocalFileHeader.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DefaultStringConverter.cs" />
-    <Compile Include="Signatures.cs" />
-    <Compile Include="ZipArchive.cs" />
-    <Compile Include="ZipEntry.cs" />
-    <Compile Include="ZipEntryCollection.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>  
+  
 </Project>

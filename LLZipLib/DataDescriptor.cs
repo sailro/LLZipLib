@@ -51,7 +51,7 @@ namespace LLZipLib
 
 		internal override int GetSize()
 		{
-			return (3 + Convert.ToInt32(UseOptionalSignature))*sizeof (uint);
+			return (3 + Convert.ToInt32(UseOptionalSignature)) * sizeof(uint);
 		}
 	}
 }

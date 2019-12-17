@@ -13,18 +13,19 @@ namespace LLZipLib
 		public ushort DiskNumber { get; set; }
 		public ushort VersionNeeded { get; set; }
 
-		public byte[] CommentBuffer { get; set; } = {};
+		public byte[] CommentBuffer { get; set; } = { };
+
 		public string Comment
 		{
 			get => ZipEntry.ZipArchive.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment);
-            set => CommentBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Comment);
-        }
+			set => CommentBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Comment);
+		}
 
 		public string Filename
 		{
 			get => ZipEntry.ZipArchive.StringConverter.GetString(FilenameBuffer, StringConverterContext.Filename);
-            set => FilenameBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Filename);
-        }
+			set => FilenameBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Filename);
+		}
 
 		public CentralDirectoryHeader()
 		{
@@ -33,16 +34,12 @@ namespace LLZipLib
 
 		internal override int GetSize()
 		{
-			return 6*sizeof (uint) + 11*sizeof (ushort) + (FilenameBuffer?.Length ?? 0) + (Extra?.Length ?? 0) + (Comment?.Length ?? 0);
+			return 6 * sizeof(uint) + 11 * sizeof(ushort) + (FilenameBuffer?.Length ?? 0) + (Extra?.Length ?? 0) + (Comment?.Length ?? 0);
 		}
 
 		internal static CentralDirectoryHeader Read(BinaryReader reader)
 		{
-			var header = new CentralDirectoryHeader
-			{
-				Offset = reader.BaseStream.Position,
-				Signature = reader.ReadUInt32()
-			};
+			var header = new CentralDirectoryHeader {Offset = reader.BaseStream.Position, Signature = reader.ReadUInt32()};
 
 			if (header.Signature != Signatures.CentralDirectoryHeader)
 				throw new NotSupportedException("bad signature");
@@ -87,15 +84,15 @@ namespace LLZipLib
 			writer.Write(Crc);
 			writer.Write(CompressedSize);
 			writer.Write(UncompressedSize);
-			writer.Write((ushort) (FilenameBuffer?.Length ?? 0));
-			writer.Write((ushort) (Extra?.Length ?? 0));
-			writer.Write((ushort) (Comment?.Length ?? 0));
+			writer.Write((ushort)(FilenameBuffer?.Length ?? 0));
+			writer.Write((ushort)(Extra?.Length ?? 0));
+			writer.Write((ushort)(Comment?.Length ?? 0));
 			writer.Write(DiskNumber);
 			writer.Write(InternalAttribute);
 			writer.Write(ExternalAttribute);
 
 			//At this time, all local headers are written
-			LocalHeaderOffset = (uint) ZipEntry.LocalFileHeader.Offset;
+			LocalHeaderOffset = (uint)ZipEntry.LocalFileHeader.Offset;
 			writer.Write(LocalHeaderOffset);
 
 			if (FilenameBuffer != null)

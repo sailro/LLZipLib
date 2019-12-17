@@ -16,12 +16,13 @@ namespace LLZipLib
 		public ushort CentralDirectoryDiskNumber { get; set; }
 		public ushort DiskNumber { get; set; }
 
-		public byte[] CommentBuffer { get; set; } = {};
+		public byte[] CommentBuffer { get; set; } = { };
+
 		public string Comment
 		{
 			get => ZipArchive.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment);
-            set => CommentBuffer = ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Comment);
-        }
+			set => CommentBuffer = ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Comment);
+		}
 
 		private static bool TrySeekToSignature(BinaryReader reader, CentralDirectoryFooter footer)
 		{
@@ -36,14 +37,16 @@ namespace LLZipLib
 					footer.Offset = currentPosition;
 					return true;
 				}
+
 				currentPosition = reader.BaseStream.Seek(-signatureLength - 1, SeekOrigin.Current);
 			}
+
 			return false;
 		}
 
 		internal override int GetSize()
 		{
-			return 3*sizeof (uint) + 5*sizeof (ushort) + (CommentBuffer?.Length ?? 0);
+			return 3 * sizeof(uint) + 5 * sizeof(ushort) + (CommentBuffer?.Length ?? 0);
 		}
 
 		internal static CentralDirectoryFooter Read(BinaryReader reader)
@@ -83,18 +86,18 @@ namespace LLZipLib
 			writer.Write(DiskNumber);
 			writer.Write(CentralDirectoryDiskNumber);
 
-			DiskEntries = TotalDiskEntries = (ushort) zip.Entries.Count;
+			DiskEntries = TotalDiskEntries = (ushort)zip.Entries.Count;
 			writer.Write(DiskEntries);
 			writer.Write(TotalDiskEntries);
 
 			var firstEntry = zip.Entries.FirstOrDefault();
-			CentralDirectoryOffset = (uint) (firstEntry?.CentralDirectoryHeader.Offset ?? 0);
-			CentralDirectorySize = (uint) zip.Entries.Sum(entry => entry.CentralDirectoryHeader.GetSize());
+			CentralDirectoryOffset = (uint)(firstEntry?.CentralDirectoryHeader.Offset ?? 0);
+			CentralDirectorySize = (uint)zip.Entries.Sum(entry => entry.CentralDirectoryHeader.GetSize());
 
 			writer.Write(CentralDirectorySize);
 			writer.Write(CentralDirectoryOffset);
 
-			writer.Write((ushort) CommentBuffer.Length);
+			writer.Write((ushort)CommentBuffer.Length);
 			if (CommentBuffer != null)
 				writer.Write(CommentBuffer, 0, CommentBuffer.Length);
 		}

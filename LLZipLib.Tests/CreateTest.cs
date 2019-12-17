@@ -9,7 +9,7 @@ namespace LLZipLib.Tests
 		[TestMethod]
 		public void CreateEmptyArchive()
 		{
-			var compareFile = Path.Combine(_filesDirectory, "empty.archive.zip");
+			var compareFile = Path.Combine(GetTestDirectory(), "empty.archive.zip");
 			var tmpFile = Path.GetTempFileName();
 			var zip = new ZipArchive();
 			zip.Write(tmpFile);
@@ -19,7 +19,7 @@ namespace LLZipLib.Tests
 		[TestMethod]
 		public void CreateSimpleArchive()
 		{
-			var compareFile = Path.Combine(_filesDirectory, "simple.zip");
+			var compareFile = Path.Combine(GetTestDirectory(), "simple.zip");
 			var tmpFile = Path.GetTempFileName();
 			var zip = new ZipArchive();
 

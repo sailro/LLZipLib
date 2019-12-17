@@ -14,11 +14,7 @@ namespace LLZipLib
 
 		public static LocalFileHeader Read(BinaryReader reader)
 		{
-			var header = new LocalFileHeader
-			{
-				Offset = reader.BaseStream.Position,
-				Signature = reader.ReadUInt32()
-			};
+			var header = new LocalFileHeader {Offset = reader.BaseStream.Position, Signature = reader.ReadUInt32()};
 
 			if (header.Signature != Signatures.LocalFileHeader)
 				throw new NotSupportedException("bad signature");
@@ -48,7 +44,7 @@ namespace LLZipLib
 
 		internal override int GetSize()
 		{
-			return 4*sizeof (uint) + 7*sizeof (ushort) + (FilenameBuffer?.Length ?? 0) + (Extra?.Length ?? 0);
+			return 4 * sizeof(uint) + 7 * sizeof(ushort) + (FilenameBuffer?.Length ?? 0) + (Extra?.Length ?? 0);
 		}
 
 		internal void Write(BinaryWriter writer)
@@ -64,8 +60,8 @@ namespace LLZipLib
 			writer.Write(Crc);
 			writer.Write(CompressedSize);
 			writer.Write(UncompressedSize);
-			writer.Write((ushort) (FilenameBuffer?.Length ?? 0));
-			writer.Write((ushort) (Extra?.Length ?? 0));
+			writer.Write((ushort)(FilenameBuffer?.Length ?? 0));
+			writer.Write((ushort)(Extra?.Length ?? 0));
 
 			if (FilenameBuffer != null)
 				writer.Write(FilenameBuffer, 0, FilenameBuffer.Length);
