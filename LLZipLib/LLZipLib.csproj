@@ -13,7 +13,7 @@
     <Copyright>Sebastien Lebreton</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageTags>ZIP Low-Level injecting crafting</PackageTags>
-    <Description>Low level Zip Library, allowing advanced tweaks (injecting/removing extra blocks, altering flags, crafting special archives)</Description>
+    <Description>Low-level Zip Library, allowing advanced tweaks (injecting/removing extra blocks, altering flags, crafting special archives)</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/sailro/LLZipLib</PackageProjectUrl>	
   </PropertyGroup>
