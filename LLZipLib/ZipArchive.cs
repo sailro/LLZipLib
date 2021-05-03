@@ -20,14 +20,14 @@ namespace LLZipLib
 
 		public static ZipArchive Read(string filename)
 		{
-			using (var stream = new FileStream(filename, FileMode.Open, FileAccess.Read))
-				return Read(stream);
+			using var stream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+			return Read(stream);
 		}
 
 		public static ZipArchive Read(Stream stream)
 		{
-			using (var reader = new BinaryReader(stream, Encoding.ASCII))
-				return Read(reader);
+			using var reader = new BinaryReader(stream, Encoding.ASCII);
+			return Read(reader);
 		}
 
 		public static ZipArchive Read(BinaryReader reader)
@@ -50,14 +50,14 @@ namespace LLZipLib
 
 		public void Write(string filename)
 		{
-			using (var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.Read))
-				Write(stream);
+			using var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.Read);
+			Write(stream);
 		}
 
 		public void Write(Stream stream)
 		{
-			using (var writer = new BinaryWriter(stream, Encoding.UTF8))
-				Write(writer);
+			using var writer = new BinaryWriter(stream, Encoding.UTF8);
+			Write(writer);
 		}
 
 		public void Write(BinaryWriter writer)

@@ -15,11 +15,12 @@
     <PackageTags>ZIP Low-Level injecting crafting</PackageTags>
     <Description>Low-level Zip Library, allowing advanced tweaks (injecting/removing extra blocks, altering flags, crafting special archives)</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/sailro/LLZipLib</PackageProjectUrl>	
+    <PackageProjectUrl>https://github.com/sailro/LLZipLib</PackageProjectUrl>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>  
+  </ItemGroup>
   
 </Project>
