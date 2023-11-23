@@ -37,7 +37,7 @@ namespace LLZipLib
 		// all possible byte values, shifted by an offset of (n * 4 bits).
 		// The divisor used is the crc32 standard polynomial 0xEDB88320
 		// Please see cited paper for more details.
-		private static readonly uint[] s_crcTable_0 = new uint[256] {
+		private static readonly uint[] _crcTable0 = [
 			0x00000000u, 0x77073096u, 0xee0e612cu, 0x990951bau, 0x076dc419u,
 			0x706af48fu, 0xe963a535u, 0x9e6495a3u, 0x0edb8832u, 0x79dcb8a4u,
 			0xe0d5e91eu, 0x97d2d988u, 0x09b64c2bu, 0x7eb17cbdu, 0xe7b82d07u,
@@ -90,8 +90,8 @@ namespace LLZipLib
 			0xcdd70693u, 0x54de5729u, 0x23d967bfu, 0xb3667a2eu, 0xc4614ab8u,
 			0x5d681b02u, 0x2a6f2b94u, 0xb40bbe37u, 0xc30c8ea1u, 0x5a05df1bu,
 			0x2d02ef8du
-		};
-		private static readonly uint[] s_crcTable_1 = new uint[256] {
+		];
+		private static readonly uint[] _crcTable_1 = [
 			0x00000000u, 0x191B3141u, 0x32366282u, 0x2B2D53C3u, 0x646CC504u,
 			0x7D77F445u, 0x565AA786u, 0x4F4196C7u, 0xC8D98A08u, 0xD1C2BB49u,
 			0xFAEFE88Au, 0xE3F4D9CBu, 0xACB54F0Cu, 0xB5AE7E4Du, 0x9E832D8Eu,
@@ -144,8 +144,8 @@ namespace LLZipLib
 			0x69CB15F8u, 0x42E6463Bu, 0x5BFD777Au, 0xDC656BB5u, 0xC57E5AF4u,
 			0xEE530937u, 0xF7483876u, 0xB809AEB1u, 0xA1129FF0u, 0x8A3FCC33u,
 			0x9324FD72u
-		};
-		private static readonly uint[] s_crcTable_2 = new uint[256] {
+		];
+		private static readonly uint[] _crcTable_2 = [
 			0x00000000u, 0x01C26A37u, 0x0384D46Eu, 0x0246BE59u, 0x0709A8DCu,
 			0x06CBC2EBu, 0x048D7CB2u, 0x054F1685u, 0x0E1351B8u, 0x0FD13B8Fu,
 			0x0D9785D6u, 0x0C55EFE1u, 0x091AF964u, 0x08D89353u, 0x0A9E2D0Au,
@@ -198,8 +198,8 @@ namespace LLZipLib
 			0xB30FB13Bu, 0xB1490F62u, 0xB08B6555u, 0xBBD72268u, 0xBA15485Fu,
 			0xB853F606u, 0xB9919C31u, 0xBCDE8AB4u, 0xBD1CE083u, 0xBF5A5EDAu,
 			0xBE9834EDu
-		};
-		private static readonly uint[] s_crcTable_3 = new uint[256] {
+		];
+		private static readonly uint[] _crcTable_3 = [
 			0x00000000u, 0xB8BC6765u, 0xAA09C88Bu, 0x12B5AFEEu, 0x8F629757u,
 			0x37DEF032u, 0x256B5FDCu, 0x9DD738B9u, 0xC5B428EFu, 0x7D084F8Au,
 			0x6FBDE064u, 0xD7018701u, 0x4AD6BFB8u, 0xF26AD8DDu, 0xE0DF7733u,
@@ -252,8 +252,8 @@ namespace LLZipLib
 			0xB1B8E695u, 0xA30D497Bu, 0x1BB12E1Eu, 0x43D23E48u, 0xFB6E592Du,
 			0xE9DBF6C3u, 0x516791A6u, 0xCCB0A91Fu, 0x740CCE7Au, 0x66B96194u,
 			0xDE0506F1u
-		};
-		private static readonly uint[] s_crcTable_4 = new uint[256] {
+		];
+		private static readonly uint[] _crcTable_4 = [
 			0x00000000u, 0x3D6029B0u, 0x7AC05360u, 0x47A07AD0u, 0xF580A6C0u,
 			0xC8E08F70u, 0x8F40F5A0u, 0xB220DC10u, 0x30704BC1u, 0x0D106271u,
 			0x4AB018A1u, 0x77D03111u, 0xC5F0ED01u, 0xF890C4B1u, 0xBF30BE61u,
@@ -306,8 +306,8 @@ namespace LLZipLib
 			0x80D4DF2Du, 0xC774A5FDu, 0xFA148C4Du, 0x78441B9Cu, 0x4524322Cu,
 			0x028448FCu, 0x3FE4614Cu, 0x8DC4BD5Cu, 0xB0A494ECu, 0xF704EE3Cu,
 			0xCA64C78Cu
-		};
-		private static readonly uint[] s_crcTable_5 = new uint[256] {
+		];
+		private static readonly uint[] _crcTable_5 = [
 			0x00000000u, 0xCB5CD3A5u, 0x4DC8A10Bu, 0x869472AEu, 0x9B914216u,
 			0x50CD91B3u, 0xD659E31Du, 0x1D0530B8u, 0xEC53826Du, 0x270F51C8u,
 			0xA19B2366u, 0x6AC7F0C3u, 0x77C2C07Bu, 0xBC9E13DEu, 0x3A0A6170u,
@@ -360,8 +360,8 @@ namespace LLZipLib
 			0x455F88AAu, 0xC3CBFA04u, 0x089729A1u, 0xF9C19B74u, 0x329D48D1u,
 			0xB4093A7Fu, 0x7F55E9DAu, 0x6250D962u, 0xA90C0AC7u, 0x2F987869u,
 			0xE4C4ABCCu
-		};
-		private static readonly uint[] s_crcTable_6 = new uint[256] {
+		];
+		private static readonly uint[] _crcTable_6 = [
 			0x00000000u, 0xA6770BB4u, 0x979F1129u, 0x31E81A9Du, 0xF44F2413u,
 			0x52382FA7u, 0x63D0353Au, 0xC5A73E8Eu, 0x33EF4E67u, 0x959845D3u,
 			0xA4705F4Eu, 0x020754FAu, 0xC7A06A74u, 0x61D761C0u, 0x503F7B5Du,
@@ -414,8 +414,8 @@ namespace LLZipLib
 			0x3646157Eu, 0x07AE0FE3u, 0xA1D90457u, 0x579174BEu, 0xF1E67F0Au,
 			0xC00E6597u, 0x66796E23u, 0xA3DE50ADu, 0x05A95B19u, 0x34414184u,
 			0x92364A30u
-		};
-		private static readonly uint[] s_crcTable_7 = new uint[256] {
+		];
+		private static readonly uint[] _crcTable_7 = [
 			0x00000000u, 0xCCAA009Eu, 0x4225077Du, 0x8E8F07E3u, 0x844A0EFAu,
 			0x48E00E64u, 0xC66F0987u, 0x0AC50919u, 0xD3E51BB5u, 0x1F4F1B2Bu,
 			0x91C01CC8u, 0x5D6A1C56u, 0x57AF154Fu, 0x9B0515D1u, 0x158A1232u,
@@ -468,11 +468,11 @@ namespace LLZipLib
 			0xB78B1A2Eu, 0x39041DCDu, 0xF5AE1D53u, 0x2C8E0FFFu, 0xE0240F61u,
 			0x6EAB0882u, 0xA201081Cu, 0xA8C40105u, 0x646E019Bu, 0xEAE10678u,
 			0x264B06E6u
-		};
+		];
 
 		private static uint ManagedCrc32(uint crc32, byte[] buffer, int offset, int length)
 		{
-			uint term1, term2, term3 = 0;
+			uint term1, term2;
 
 			crc32 ^= 0xFFFFFFFFU;
 			int runningLength = (length / 8) * 8;
@@ -482,27 +482,27 @@ namespace LLZipLib
 			{
 				crc32 ^= (uint)(buffer[offset] | buffer[offset + 1] << 8 | buffer[offset + 2] << 16 | buffer[offset + 3] << 24);
 				offset += 4;
-				term1 = s_crcTable_7[crc32 & 0x000000FF] ^
-						s_crcTable_6[(crc32 >> 8) & 0x000000FF];
+				term1 = _crcTable_7[crc32 & 0x000000FF] ^
+						_crcTable_6[(crc32 >> 8) & 0x000000FF];
 				term2 = crc32 >> 16;
 				crc32 = term1 ^
-						s_crcTable_5[term2 & 0x000000FF] ^
-						s_crcTable_4[(term2 >> 8) & 0x000000FF];
+						_crcTable_5[term2 & 0x000000FF] ^
+						_crcTable_4[(term2 >> 8) & 0x000000FF];
 
 
-				term3 = (uint)(buffer[offset] | buffer[offset + 1] << 8 | buffer[offset + 2] << 16 | buffer[offset + 3] << 24);
+				var term3 = (uint)(buffer[offset] | buffer[offset + 1] << 8 | buffer[offset + 2] << 16 | buffer[offset + 3] << 24);
 				offset += 4;
-				term1 = s_crcTable_3[term3 & 0x000000FF] ^
-						s_crcTable_2[(term3 >> 8) & 0x000000FF];
+				term1 = _crcTable_3[term3 & 0x000000FF] ^
+						_crcTable_2[(term3 >> 8) & 0x000000FF];
 				term2 = term3 >> 16;
 				crc32 ^= term1 ^
-						s_crcTable_1[term2 & 0x000000FF] ^
-						s_crcTable_0[(term2 >> 8) & 0x000000FF];
+						_crcTable_1[term2 & 0x000000FF] ^
+						_crcTable0[(term2 >> 8) & 0x000000FF];
 			}
 
 			for (int i = 0; i < endBytes; i++)
 			{
-				crc32 = s_crcTable_0[(crc32 ^ buffer[offset++]) & 0x000000FF] ^ (crc32 >> 8);
+				crc32 = _crcTable0[(crc32 ^ buffer[offset++]) & 0x000000FF] ^ (crc32 >> 8);
 			}
 
 			crc32 ^= 0xFFFFFFFFU;

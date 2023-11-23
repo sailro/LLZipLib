@@ -1,23 +1,22 @@
-﻿namespace LLZipLib.Samples
+﻿namespace LLZipLib.Samples;
+
+internal class RemoveAllExtraBlocks
 {
-	internal class RemoveAllExtraBlocks
+	private static int Main(string[] args)
 	{
-		private static int Main(string[] args)
+		if (args.Length == 0)
+			return 1;
+		var filename = args[0];
+
+		var zip = ZipArchive.Read(filename);
+
+		foreach (var entry in zip.Entries)
 		{
-			if (args.Length == 0)
-				return 1;
-			var filename = args[0];
-
-			var zip = ZipArchive.Read(filename);
-
-			foreach (var entry in zip.Entries)
-			{
-				entry.LocalFileHeader.Extra = new byte[0];
-				entry.CentralDirectoryHeader.Extra = new byte[0];
-			}
-
-			zip.Write(filename);
-			return 0;
+			entry.LocalFileHeader.Extra = [];
+			entry.CentralDirectoryHeader.Extra = [];
 		}
+
+		zip.Write(filename);
+		return 0;
 	}
 }

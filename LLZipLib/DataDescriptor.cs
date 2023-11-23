@@ -1,57 +1,53 @@
-﻿using System;
-using System.IO;
+﻿namespace LLZipLib;
 
-namespace LLZipLib
+public class DataDescriptor : Descriptor
 {
-	public class DataDescriptor : Descriptor
+	public uint Signature { get; protected set; }
+	public bool UseOptionalSignature { get; set; }
+
+	public DataDescriptor()
 	{
-		public uint Signature { get; protected set; }
-		public bool UseOptionalSignature { get; set; }
+		Signature = Signatures.DataDescriptor;
+		UseOptionalSignature = true;
+	}
 
-		public DataDescriptor()
+	internal static DataDescriptor Read(BinaryReader reader)
+	{
+		var descriptor = new DataDescriptor {Offset = reader.BaseStream.Position};
+
+		// Read Optionnal Signature
+		var signature = reader.ReadUInt32();
+		if (signature == Signatures.DataDescriptor)
 		{
-			Signature = Signatures.DataDescriptor;
-			UseOptionalSignature = true;
+			descriptor.UseOptionalSignature = true;
+		}
+		else
+		{
+			descriptor.UseOptionalSignature = false;
+			reader.BaseStream.Position = descriptor.Offset;
 		}
 
-		internal static DataDescriptor Read(BinaryReader reader)
-		{
-			var descriptor = new DataDescriptor {Offset = reader.BaseStream.Position};
+		descriptor.Crc = reader.ReadUInt32();
+		descriptor.CompressedSize = reader.ReadInt32();
+		descriptor.UncompressedSize = reader.ReadInt32();
 
-			// Read Optionnal Signature
-			var signature = reader.ReadUInt32();
-			if (signature == Signatures.DataDescriptor)
-			{
-				descriptor.UseOptionalSignature = true;
-			}
-			else
-			{
-				descriptor.UseOptionalSignature = false;
-				reader.BaseStream.Position = descriptor.Offset;
-			}
+		return descriptor;
+	}
 
-			descriptor.Crc = reader.ReadUInt32();
-			descriptor.CompressedSize = reader.ReadInt32();
-			descriptor.UncompressedSize = reader.ReadInt32();
+	internal void Write(BinaryWriter writer)
+	{
+		Offset = writer.BaseStream.Position;
 
-			return descriptor;
-		}
+		if (UseOptionalSignature)
+			writer.Write(Signature);
 
-		internal void Write(BinaryWriter writer)
-		{
-			Offset = writer.BaseStream.Position;
+		writer.Write(Crc);
+		writer.Write(CompressedSize);
+		writer.Write(UncompressedSize);
+	}
 
-			if (UseOptionalSignature)
-				writer.Write(Signature);
-
-			writer.Write(Crc);
-			writer.Write(CompressedSize);
-			writer.Write(UncompressedSize);
-		}
-
-		internal override int GetSize()
-		{
-			return (3 + Convert.ToInt32(UseOptionalSignature)) * sizeof(uint);
-		}
+	internal override int GetSize()
+	{
+		return (3 + Convert.ToInt32(UseOptionalSignature)) * sizeof(uint);
 	}
 }

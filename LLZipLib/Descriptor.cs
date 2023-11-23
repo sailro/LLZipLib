@@ -1,9 +1,8 @@
-﻿namespace LLZipLib
+﻿namespace LLZipLib;
+
+public abstract class Descriptor : Block
 {
-	public abstract class Descriptor : Block
-	{
-		public uint Crc { get; set; }
-		public int CompressedSize { get; set; }
-		public int UncompressedSize { get; set; }
-	}
+	public uint Crc { get; set; }
+	public int CompressedSize { get; set; }
+	public int UncompressedSize { get; set; }
 }

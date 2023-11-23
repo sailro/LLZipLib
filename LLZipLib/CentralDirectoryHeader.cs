@@ -1,11 +1,8 @@
-﻿using System;
-using System.IO;
-
-namespace LLZipLib
+﻿namespace LLZipLib
 {
 	public class CentralDirectoryHeader : Header
 	{
-		public ZipEntry ZipEntry { get; set; }
+		public ZipEntry? ZipEntry { get; set; }
 
 		public uint LocalHeaderOffset { get; private set; }
 		public uint ExternalAttribute { get; set; }
@@ -13,18 +10,18 @@ namespace LLZipLib
 		public ushort DiskNumber { get; set; }
 		public ushort VersionNeeded { get; set; }
 
-		public byte[] CommentBuffer { get; set; } = { };
+		public byte[] CommentBuffer { get; set; } = [];
 
 		public string Comment
 		{
-			get => ZipEntry.ZipArchive.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment);
-			set => CommentBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Comment);
+			get => ZipEntry?.ZipArchive?.StringConverter.GetString(CommentBuffer, StringConverterContext.Comment) ?? throw new InvalidOperationException("this header must be linked to a ZipEntry/ZipArchive");
+			set => CommentBuffer = ZipEntry?.ZipArchive?.StringConverter.GetBytes(value, StringConverterContext.Comment) ?? throw new InvalidOperationException("this header must be linked to a ZipEntry/ZipArchive");
 		}
 
 		public string Filename
 		{
-			get => ZipEntry.ZipArchive.StringConverter.GetString(FilenameBuffer, StringConverterContext.Filename);
-			set => FilenameBuffer = ZipEntry.ZipArchive.StringConverter.GetBytes(value, StringConverterContext.Filename);
+			get => ZipEntry?.ZipArchive?.StringConverter.GetString(FilenameBuffer, StringConverterContext.Filename) ?? throw new InvalidOperationException("this header must be linked to a ZipEntry/ZipArchive");
+			set => FilenameBuffer = ZipEntry?.ZipArchive?.StringConverter.GetBytes(value, StringConverterContext.Filename) ?? throw new InvalidOperationException("this header must be linked to a ZipEntry/ZipArchive");
 		}
 
 		public CentralDirectoryHeader()
@@ -34,7 +31,7 @@ namespace LLZipLib
 
 		internal override int GetSize()
 		{
-			return 6 * sizeof(uint) + 11 * sizeof(ushort) + (FilenameBuffer?.Length ?? 0) + (Extra?.Length ?? 0) + (Comment?.Length ?? 0);
+			return 6 * sizeof(uint) + 11 * sizeof(ushort) + FilenameBuffer.Length + Extra.Length + Comment.Length;
 		}
 
 		internal static CentralDirectoryHeader Read(BinaryReader reader)
@@ -84,9 +81,9 @@ namespace LLZipLib
 			writer.Write(Crc);
 			writer.Write(CompressedSize);
 			writer.Write(UncompressedSize);
-			writer.Write((ushort)(FilenameBuffer?.Length ?? 0));
-			writer.Write((ushort)(Extra?.Length ?? 0));
-			writer.Write((ushort)(Comment?.Length ?? 0));
+			writer.Write((ushort)FilenameBuffer.Length);
+			writer.Write((ushort)Extra.Length);
+			writer.Write((ushort)Comment.Length);
 			writer.Write(DiskNumber);
 			writer.Write(InternalAttribute);
 			writer.Write(ExternalAttribute);
@@ -95,12 +92,9 @@ namespace LLZipLib
 			LocalHeaderOffset = (uint)ZipEntry.LocalFileHeader.Offset;
 			writer.Write(LocalHeaderOffset);
 
-			if (FilenameBuffer != null)
-				writer.Write(FilenameBuffer, 0, FilenameBuffer.Length);
-			if (Extra != null)
-				writer.Write(Extra, 0, Extra.Length);
-			if (Comment != null)
-				writer.Write(CommentBuffer, 0, Comment.Length);
+			writer.Write(FilenameBuffer, 0, FilenameBuffer.Length);
+			writer.Write(Extra, 0, Extra.Length);
+			writer.Write(CommentBuffer, 0, Comment.Length);
 		}
 	}
 }

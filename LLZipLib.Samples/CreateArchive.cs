@@ -1,17 +1,16 @@
-﻿namespace LLZipLib.Samples
+﻿namespace LLZipLib.Samples;
+
+internal class CreateArchive
 {
-	internal class CreateArchive
+	private static void Main()
 	{
-		private static void Main()
-		{
-			var zip = new ZipArchive();
-			var entry = new ZipEntry();
+		var zip = new ZipArchive();
+		var entry = new ZipEntry();
 
-			zip.Entries.Add(entry);
-			entry.LocalFileHeader.Filename = entry.CentralDirectoryHeader.Filename = "foo.txt";
-			entry.Data = zip.StringConverter.GetBytes("Hello world!", StringConverterContext.Content);
+		zip.Entries.Add(entry);
+		entry.LocalFileHeader.Filename = entry.CentralDirectoryHeader.Filename = "foo.txt";
+		entry.Data = zip.StringConverter.GetBytes("Hello world!", StringConverterContext.Content);
 
-			zip.Write("foo.zip");
-		}
+		zip.Write("foo.zip");
 	}
 }

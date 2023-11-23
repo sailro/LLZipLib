@@ -1,8 +1,7 @@
-﻿namespace LLZipLib
+﻿namespace LLZipLib;
+
+public abstract class Block
 {
-	public abstract class Block
-	{
-		internal long Offset { get; set; }
-		internal abstract int GetSize();
-	}
+	internal long Offset { get; set; }
+	internal abstract int GetSize();
 }

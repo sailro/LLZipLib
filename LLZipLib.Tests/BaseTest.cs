@@ -1,21 +1,19 @@
-﻿using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LLZipLib.Tests
+namespace LLZipLib.Tests;
+
+public abstract class BaseTest
 {
-	public abstract class BaseTest
+	public TestContext? TestContext
 	{
-		public TestContext TestContext
-		{
-			get;
-			set;
-		}
+		get;
+		set;
+	}
 
-		public string GetTestDirectory()
-		{
-			var asmPath = GetType().Assembly.Location;
-			var basePath = Path.Combine(Path.GetDirectoryName(asmPath), "Files");
-			return basePath;
-		}
+	public string GetTestDirectory()
+	{
+		var asmPath = GetType().Assembly.Location;
+		var basePath = Path.Combine(Path.GetDirectoryName(asmPath)!, "Files");
+		return basePath;
 	}
 }

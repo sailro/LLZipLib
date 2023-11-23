@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LLZipLib.Tests
 {
@@ -11,7 +10,7 @@ namespace LLZipLib.Tests
 		{
 			foreach (var file in Directory.GetFiles(GetTestDirectory()))
 			{
-				TestContext.WriteLine("Testing {0}", file);
+				TestContext?.WriteLine("Testing {0}", file);
 				var zip = ZipArchive.Read(file);
 				var tmpFile = Path.GetTempFileName();
 

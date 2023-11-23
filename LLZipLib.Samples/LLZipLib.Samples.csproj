@@ -5,11 +5,32 @@
     <OutputType>Exe</OutputType>
     <IsPackable>false</IsPackable>
     <StartupObject>LLZipLib.Samples.ChangeFileContent</StartupObject>
-    <LangVersion>9.0</LangVersion>
-  </PropertyGroup>
+ </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LLZipLib\LLZipLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageVersion Update="Microsoft.CodeAnalysis.CSharp.CodeStyle" Version="4.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageVersion Update="Microsoft.VisualStudio.Threading.Analyzers" Version="17.8.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
