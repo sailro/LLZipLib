@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="LLZipLib.Samples/LLZipLib.Samples.csproj" />
+  <Project Path="LLZipLib.Tests/LLZipLib.Tests.csproj" />
+  <Project Path="LLZipLib/LLZipLib.csproj" />
+</Solution>
